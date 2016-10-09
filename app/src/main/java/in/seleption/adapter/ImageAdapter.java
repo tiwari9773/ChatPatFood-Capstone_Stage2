@@ -13,6 +13,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import in.seleption.chatpatfood.R;
+import in.seleption.chatpatfood.activity.RegisterStallActivity;
 import in.seleption.model.Menu;
 
 /**
@@ -21,9 +22,11 @@ import in.seleption.model.Menu;
 public class ImageAdapter extends BaseAdapter {
     private LayoutInflater mInflater;
     private List<Menu> lsItem;
+    private RegisterStallActivity.OnClickFoodmenu onClickFoodmenu;
 
-    public ImageAdapter(Context context, List<Menu> lsItem) {
+    public ImageAdapter(Context context, List<Menu> lsItem, RegisterStallActivity.OnClickFoodmenu onClickFoodmenu) {
         mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.onClickFoodmenu = onClickFoodmenu;
         this.lsItem = lsItem;
     }
 
@@ -39,7 +42,7 @@ public class ImageAdapter extends BaseAdapter {
         return position;
     }
 
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         final ViewHolder holder;
         if (convertView == null) {
             holder = new ViewHolder();
@@ -64,11 +67,12 @@ public class ImageAdapter extends BaseAdapter {
                 if (Build.VERSION.SDK_INT >= 16) {
                     if (cb.isChecked()) {
                         holder.imageview.setImageAlpha(50);
+                        onClickFoodmenu.onClickFoodMenu(lsItem.get(position).getName(), position, true);
                     } else {
+                        onClickFoodmenu.onClickFoodMenu(lsItem.get(position).getName(), position, false);
                         holder.imageview.setImageAlpha(255);
                     }
                 }
-
             }
         });
 

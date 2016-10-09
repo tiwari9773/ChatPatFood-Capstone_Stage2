@@ -22,7 +22,7 @@
         <item>@drawable/home_menu_icecream</item>
     </integer-array>
 
-     <string name="label_tv_timing"> Timing: ( <xliff:g id="start">%1$s:00</xliff:g> - <xliff:g id="end">%2$s:00</xliff:g> )
+     <string name="label_tv_timing"> Timing: ( <xliff:g id="start">%1$d:00</xliff:g> - <xliff:g id="end">%2$d:00</xliff:g> )
     </string>
 
 </resources>

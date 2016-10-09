@@ -46,10 +46,13 @@ import java.util.regex.Pattern;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import in.seleption.Utility.JsonHelper;
 import in.seleption.adapter.ImageAdapter;
+import in.seleption.chatpatfood.BuildConfig;
 import in.seleption.chatpatfood.R;
 import in.seleption.constant.AppConstant;
 import in.seleption.model.Menu;
+import in.seleption.model.Stall;
 
 /**
  * Created by Lokesh on 28-11-2015.
@@ -64,6 +67,9 @@ public class RegisterStallActivity extends FragmentActivity implements OnMapRead
 
     @Bind(R.id.et_number)
     EditText etNumber;
+
+    @Bind(R.id.et_other)
+    EditText etOther;
 
     @Bind(R.id.rangebar_time)
     RangeBar rangeBar;
@@ -85,10 +91,13 @@ public class RegisterStallActivity extends FragmentActivity implements OnMapRead
     /*Request Id for camera*/
     private static final int REQUEST_IMAGE_CAPTURE = 1;
 
-    /*Record Category of selected Menu*/
-    private List<Integer> lsCategoryId = new ArrayList<>();
-
     private int MY_LOCATION_REQUEST_CODE = 1;
+
+    /*-------------------------------*/
+    private int defaultStartTime = 10;
+    private int defaultEndTime = 18;
+
+    private Stall stall;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -103,21 +112,20 @@ public class RegisterStallActivity extends FragmentActivity implements OnMapRead
 
         /*make by default keyboard popup down*/
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
     }
 
     /*Initialise all respective variable*/
     private void initialise() {
 
-        // getActionBar().hide();
+        stall = new Stall();
+        stall.setStart_time(defaultStartTime);
+        stall.setEnd_time(defaultEndTime);
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
-        /*-------------------------------*/
-        int defaultStartTime = 10;
-        int defaultEndTime = 18;
 
         /*set Default Value*/
         String time = String.format(getString(R.string.label_tv_timing), defaultStartTime, defaultEndTime);
@@ -132,6 +140,9 @@ public class RegisterStallActivity extends FragmentActivity implements OnMapRead
                 /*Rangebar Start form 0 so increment by 1 to match with expected value*/
                 String time = String.format(getString(R.string.label_tv_timing), leftThumbIndex + 1, rightThumbIndex + 1);
                 tvTimeRange.setText(time);
+
+                stall.setStart_time(leftThumbIndex + 1);
+                stall.setEnd_time(rightThumbIndex + 1);
             }
         });
         /*--------------------------------*/
@@ -151,11 +162,38 @@ public class RegisterStallActivity extends FragmentActivity implements OnMapRead
         /*make resource free*/
         typedArray.recycle();
 
-        /*Assign all related category to gridview*/
-        ImageAdapter imageAdapter = new ImageAdapter(this, items);
+        /*Assign all related category to grid-view*/
+        ImageAdapter imageAdapter = new ImageAdapter(this, items, onClickFoodmenu);
         gvCategoryMenu.setAdapter(imageAdapter);
     }
 
+
+    OnClickFoodmenu onClickFoodmenu = new OnClickFoodmenu() {
+        @Override
+        public void onClickFoodMenu(String name, int position, boolean is_add_remove) {
+            List<Menu> menu = stall.getMenu();
+            if (menu == null) {
+                menu = new ArrayList<>();
+            }
+
+            if (is_add_remove) {
+                menu.add(new Menu(position, name));
+            } else {
+                int i = 0;
+                for (Menu temp : menu) {
+                    if (temp.getName().equalsIgnoreCase(name)) {
+                        menu.remove(i);
+                        break;
+                    }
+                    i++;
+                }
+            }
+            stall.setMenu(menu);
+            if (BuildConfig.DEBUG) {
+                Toast.makeText(RegisterStallActivity.this, JsonHelper.ConvertToJson(menu), Toast.LENGTH_SHORT).show();
+            }
+        }
+    };
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
@@ -174,15 +212,6 @@ public class RegisterStallActivity extends FragmentActivity implements OnMapRead
         }
     }
 
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
@@ -214,7 +243,7 @@ public class RegisterStallActivity extends FragmentActivity implements OnMapRead
                 //mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(loc, 10.0f));
 
                 mMap.addMarker(new MarkerOptions().position(loc).title("Marker"));
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(loc,15));
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, 15));
             }
         }
     };
@@ -320,12 +349,27 @@ public class RegisterStallActivity extends FragmentActivity implements OnMapRead
             return;
         }
 
-        Toast.makeText(RegisterStallActivity.this, mMap.getMyLocation().getLatitude() + "-" + mMap.getMyLocation().getLongitude(), Toast.LENGTH_SHORT).show();
+        String other = etOther.getText().toString();
+
+        stall.setOthers(other);
+        stall.setStall_name(name);
+        stall.setMobile_no(number);
+        stall.setUrl(mCurrentPhotoPath);
+        stall.setLatittude(mMap.getMyLocation().getLatitude());
+        stall.setLongitude(mMap.getMyLocation().getLongitude());
+
+        if (BuildConfig.DEBUG) {
+            Toast.makeText(RegisterStallActivity.this, mMap.getMyLocation().getLatitude() + "-" + mMap.getMyLocation().getLongitude(), Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void LogD(String msg) {
         if (AppConstant.DEBUG) {
             Log.d(TAG, msg);
         }
+    }
+
+    public interface OnClickFoodmenu {
+        void onClickFoodMenu(String name, int position, boolean add_remove);
     }
 }

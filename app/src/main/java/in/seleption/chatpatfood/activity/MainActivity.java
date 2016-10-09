@@ -63,10 +63,10 @@ public class MainActivity extends AppCompatActivity
         stall.setComment("Test");
         stall.setStall_name("Hari Om food Stall");
         stall.setMobile_no("9773319913");
-        stall.setStart_time("11:00 AM");
-        stall.setEnd_time("06:00 PM");
-        stall.setLatittude("91.00000");
-        stall.setLongitude("81.00000");
+        stall.setStart_time(11);
+        stall.setEnd_time(18);
+        stall.setLatittude(91.00000d);
+        stall.setLongitude(81.00000d);
         stall.setUrl("http://google.com/abc.png");
         stall.setMenu(lsMenu);
         /*TEst*/

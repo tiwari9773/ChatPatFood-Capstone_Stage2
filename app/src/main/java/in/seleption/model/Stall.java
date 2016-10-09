@@ -9,19 +9,28 @@ public class Stall {
 
     String stall_name;
     String mobile_no;
-    String start_time;
-    String end_time;
+    int start_time;
+    int end_time;
 
     List<Menu> menu;
     /*Url of Image of his shop*/
     String url;
 
-    String latittude;
-    String longitude;
+    double latittude;
+    double longitude;
     String comment;
 
     /*If any*/
     String address;
+    String others;
+
+    public String getOthers() {
+        return others;
+    }
+
+    public void setOthers(String others) {
+        this.others = others;
+    }
 
     public String getStall_name() {
         return stall_name;
@@ -39,19 +48,19 @@ public class Stall {
         this.mobile_no = mobile_no;
     }
 
-    public String getStart_time() {
+    public int getStart_time() {
         return start_time;
     }
 
-    public void setStart_time(String start_time) {
+    public void setStart_time(int start_time) {
         this.start_time = start_time;
     }
 
-    public String getEnd_time() {
+    public int getEnd_time() {
         return end_time;
     }
 
-    public void setEnd_time(String end_time) {
+    public void setEnd_time(int end_time) {
         this.end_time = end_time;
     }
 
@@ -71,19 +80,19 @@ public class Stall {
         this.url = url;
     }
 
-    public String getLatittude() {
+    public double getLatittude() {
         return latittude;
     }
 
-    public void setLatittude(String latittude) {
+    public void setLatittude(double latittude) {
         this.latittude = latittude;
     }
 
-    public String getLongitude() {
+    public double getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(String longitude) {
+    public void setLongitude(double longitude) {
         this.longitude = longitude;
     }
 
