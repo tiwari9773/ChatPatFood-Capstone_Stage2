@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string-array name="arr_home_food_name">
+        <item>Vada Pav</item>
+        <item>Chiness</item>
+        <item>Pani puri</item>
+        <item>Biryani</item>
+        <item>Pav Bhaji</item>
+        <item>Idli</item>
+        <item>Dosa</item>
+        <item>IceCream</item>
+    </string-array>
+
+    <integer-array name="arr_drawable_menu">
+        <item>@drawable/home_menu_vadapav</item>
+        <item>@drawable/home_menu_chinesefood</item>
+        <item>@drawable/home_menu_pani_puri</item>
+        <item>@drawable/home_menu_biryani</item>
+        <item>@drawable/home_menu_pav_bhaji</item>
+        <item>@drawable/home_menu_idli</item>
+        <item>@drawable/home_menu_masaladosa</item>
+        <item>@drawable/home_menu_icecream</item>
+    </integer-array>
+
+     <string name="label_tv_timing"> Timing: ( <xliff:g id="start">%1$s:00</xliff:g> - <xliff:g id="end">%2$s:00</xliff:g> )
+    </string>
+
+</resources>
+
+    <!--<item>Sandwitch</item>-->
