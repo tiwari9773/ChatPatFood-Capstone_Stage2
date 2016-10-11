@@ -46,6 +46,7 @@ import java.util.regex.Pattern;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import in.seleption.Utility.DBUtility;
 import in.seleption.Utility.JsonHelper;
 import in.seleption.adapter.ImageAdapter;
 import in.seleption.chatpatfood.BuildConfig;
@@ -241,8 +242,11 @@ public class RegisterStallActivity extends FragmentActivity implements OnMapRead
             if (mMap != null) {
 //                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(loc, 5.0f));
 
-                mMap.addMarker(new MarkerOptions().position(loc).title("Marker"));
+                mMap.clear();
+                mMap.addMarker(new MarkerOptions().position(loc).title(etName.getText().toString()));
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, 15));
+                stall.setLatittude(loc.latitude);
+                stall.setLongitude(loc.longitude);
 
                 if (BuildConfig.DEBUG) {
                     Toast.makeText(RegisterStallActivity.this, "location->" + location.getLatitude() + "," + location.getLongitude(), Toast.LENGTH_SHORT).show();
@@ -353,14 +357,15 @@ public class RegisterStallActivity extends FragmentActivity implements OnMapRead
         }
 
         String other = etOther.getText().toString();
-
         stall.setOthers(other);
+
         stall.setStall_name(name);
         stall.setMobile_no(number);
         stall.setUrl(mCurrentPhotoPath);
         stall.setLatittude(mMap.getMyLocation().getLatitude());
         stall.setLongitude(mMap.getMyLocation().getLongitude());
 
+        DBUtility.insertSingleStall(getApplicationContext(), stall);
         if (BuildConfig.DEBUG) {
             Toast.makeText(RegisterStallActivity.this, mMap.getMyLocation().getLatitude() + "-" + mMap.getMyLocation().getLongitude(), Toast.LENGTH_SHORT).show();
         }

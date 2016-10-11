@@ -3,7 +3,6 @@ package in.seleption.db_helper;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.net.Uri;
-import android.os.Build;
 import android.provider.BaseColumns;
 
 import in.seleption.chatpatfood.BuildConfig;
@@ -35,8 +34,8 @@ public final class TableContract {
         public static String NAME = "name";
         public static String LATI = "lati";
         public static String LONGI = "longi";
-        public static String CATEGORY_ID = "category_id";
-        public static String CATEGORY_OTHER = "category_other";
+        public static String MENU = "menu";
+        public static String OTHER = "other";
         public static String START_TIME = "start_time";
         public static String END_TIME = "end_time";
         public static String PHONE_NO = "phone_no";
@@ -52,16 +51,16 @@ public final class TableContract {
                 + NAME + T.TYPE_TEXT + T.SEP_COMMA
                 + LATI + T.TYPE_TEXT + T.SEP_COMMA
                 + LONGI + T.TYPE_TEXT + T.SEP_COMMA
-                + CATEGORY_ID + T.TYPE_TEXT + T.SEP_COMMA
-                + CATEGORY_OTHER + T.TYPE_TEXT + T.SEP_COMMA
+                + MENU + T.TYPE_TEXT + T.SEP_COMMA
                 + START_TIME + T.TYPE_TEXT + T.SEP_COMMA
                 + END_TIME + T.TYPE_TEXT + T.SEP_COMMA
+                + OTHER + T.TYPE_TEXT + T.SEP_COMMA
                 + PHONE_NO + T.TYPE_TEXT + T.SEP_COMMA
                 + PHOTO_URL + T.TYPE_TEXT + T.SEP_COMMA
                 + CLOSE_DAY + T.TYPE_TEXT + T.SEP_COMMA
                 + REGISTER_DATE + T.TYPE_TEXT + T.SEP_COMMA
                 + IS_SYNC + T.TYPE_TEXT + T.SEP_COMMA
-                + T.UNIQUE + T.OPEN_BRACE + _ID + T.CLOSE_BRACE + T.ON_CONFLICT_REPLACE
+                + T.UNIQUE + T.OPEN_BRACE + PHONE_NO + T.CLOSE_BRACE + T.ON_CONFLICT_REPLACE
                 + T.CLOSE_BRACE + T.SEMICOLON;
 
         public static final String SQL_DROP = T.DROP_TABLE + TABLE_NAME;
