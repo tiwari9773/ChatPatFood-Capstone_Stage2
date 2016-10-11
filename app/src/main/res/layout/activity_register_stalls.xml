@@ -160,7 +160,6 @@
                         android:layout_centerHorizontal="true"
                         android:layout_centerVertical="true"
                         android:hint="Others"
-                        android:inputType="phone"
                         android:nextFocusDown="@+id/et_number" />
 
                 </android.support.design.widget.TextInputLayout>

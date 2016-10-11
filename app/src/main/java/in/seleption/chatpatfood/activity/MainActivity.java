@@ -2,35 +2,41 @@ package in.seleption.chatpatfood.activity;
 
 import android.content.Intent;
 import android.content.res.TypedArray;
+import android.database.Cursor;
 import android.os.Bundle;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import in.seleption.Utility.JsonHelper;
 import in.seleption.adapter.HomeMenuRecyclerAdapter;
 import in.seleption.adapter.RecycleMarginDecoration;
 import in.seleption.chatpatfood.R;
+import in.seleption.db_helper.TableContract;
 import in.seleption.listener.HomeMenuClickListener;
 import in.seleption.model.Menu;
-import in.seleption.model.Stall;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, HomeMenuClickListener {
+        implements NavigationView.OnNavigationItemSelectedListener, HomeMenuClickListener, LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final String TAG = MainActivity.class.getName();
+    private HomeMenuRecyclerAdapter adapter;
+
+    // Unique Loader Id for every loader we create
+    private static final int LIST_LOADER = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,26 +57,8 @@ public class MainActivity extends AppCompatActivity
         /*Initialise*/
         initialise();
 
-        Menu menu = new Menu(1,"Vada pav");
-        Menu menu2 = new Menu(2,"Idli");
+        getSupportLoaderManager().initLoader(LIST_LOADER, null, this);
 
-        List<Menu> lsMenu = new ArrayList<>(2);
-        lsMenu.add(menu);
-        lsMenu.add(menu2);
-
-        Stall stall = new Stall();
-        stall.setAddress("Mumbai");
-        stall.setComment("Test");
-        stall.setStall_name("Hari Om food Stall");
-        stall.setMobile_no("9773319913");
-        stall.setStart_time(11);
-        stall.setEnd_time(18);
-        stall.setLatittude(91.00000d);
-        stall.setLongitude(81.00000d);
-        stall.setUrl("http://google.com/abc.png");
-        stall.setMenu(lsMenu);
-        /*TEst*/
-        Log.e(TAG, "onCreate: "+ JsonHelper.ConvertToJson(stall));
     }
 
     private void initialise() {
@@ -90,11 +78,18 @@ public class MainActivity extends AppCompatActivity
         img.recycle();
 
         RecycleMarginDecoration decorator = new RecycleMarginDecoration(this);
-        HomeMenuRecyclerAdapter adapter = new HomeMenuRecyclerAdapter(items, this);
+        adapter = new HomeMenuRecyclerAdapter(this);
         GridLayoutManager manager = new GridLayoutManager(this, 2, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(manager);
         recyclerView.addItemDecoration(decorator);
         recyclerView.setAdapter(adapter);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+
     }
 
     @Override
@@ -116,12 +111,8 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
@@ -163,7 +154,24 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onMenuClickListener(int id) {
         Toast.makeText(MainActivity.this, id + "Clicked", Toast.LENGTH_SHORT).show();
+    }
 
-        // Intent in = new Intent()
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        return new CursorLoader(this, TableContract.RegisterStall.CONTENT_URI, null, null, null, null);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+
+        if (data != null) {
+            adapter.swapCursor(data);
+        }
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        adapter.swapCursor(null);
     }
 }

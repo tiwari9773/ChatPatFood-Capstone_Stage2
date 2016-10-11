@@ -196,6 +196,7 @@ public class RegisterStallActivity extends FragmentActivity implements OnMapRead
         }
     };
 
+
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         if (requestCode == MY_LOCATION_REQUEST_CODE) {
@@ -362,8 +363,6 @@ public class RegisterStallActivity extends FragmentActivity implements OnMapRead
         stall.setStall_name(name);
         stall.setMobile_no(number);
         stall.setUrl(mCurrentPhotoPath);
-        stall.setLatittude(mMap.getMyLocation().getLatitude());
-        stall.setLongitude(mMap.getMyLocation().getLongitude());
 
         DBUtility.insertSingleStall(getApplicationContext(), stall);
         if (BuildConfig.DEBUG) {
