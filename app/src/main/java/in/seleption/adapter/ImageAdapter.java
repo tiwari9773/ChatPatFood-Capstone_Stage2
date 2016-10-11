@@ -22,11 +22,11 @@ import in.seleption.model.Menu;
 public class ImageAdapter extends BaseAdapter {
     private LayoutInflater mInflater;
     private List<Menu> lsItem;
-    private RegisterStallActivity.OnClickFoodmenu onClickFoodmenu;
+    private RegisterStallActivity.OnClickFoodMenu onClickFoodMenu;
 
-    public ImageAdapter(Context context, List<Menu> lsItem, RegisterStallActivity.OnClickFoodmenu onClickFoodmenu) {
+    public ImageAdapter(Context context, List<Menu> lsItem, RegisterStallActivity.OnClickFoodMenu onClickFoodmenu) {
         mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        this.onClickFoodmenu = onClickFoodmenu;
+        this.onClickFoodMenu = onClickFoodmenu;
         this.lsItem = lsItem;
     }
 
@@ -67,9 +67,9 @@ public class ImageAdapter extends BaseAdapter {
                 if (Build.VERSION.SDK_INT >= 16) {
                     if (cb.isChecked()) {
                         holder.imageview.setImageAlpha(50);
-                        onClickFoodmenu.onClickFoodMenu(lsItem.get(position).getName(), position, true);
+                        onClickFoodMenu.onClickFoodMenu(lsItem.get(position).getName(), position, true);
                     } else {
-                        onClickFoodmenu.onClickFoodMenu(lsItem.get(position).getName(), position, false);
+                        onClickFoodMenu.onClickFoodMenu(lsItem.get(position).getName(), position, false);
                         holder.imageview.setImageAlpha(255);
                     }
                 }

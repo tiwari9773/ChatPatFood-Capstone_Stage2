@@ -163,12 +163,12 @@ public class RegisterStallActivity extends FragmentActivity implements OnMapRead
         typedArray.recycle();
 
         /*Assign all related category to grid-view*/
-        ImageAdapter imageAdapter = new ImageAdapter(this, items, onClickFoodmenu);
+        ImageAdapter imageAdapter = new ImageAdapter(this, items, onClickFoodMenu);
         gvCategoryMenu.setAdapter(imageAdapter);
     }
 
 
-    OnClickFoodmenu onClickFoodmenu = new OnClickFoodmenu() {
+    OnClickFoodMenu onClickFoodMenu = new OnClickFoodMenu() {
         @Override
         public void onClickFoodMenu(String name, int position, boolean is_add_remove) {
             List<Menu> menu = stall.getMenu();
@@ -232,7 +232,6 @@ public class RegisterStallActivity extends FragmentActivity implements OnMapRead
             mMap.setOnMyLocationChangeListener(myLocationChangeListener);
         }
 
-        // Show rationale and request permission.
     }
 
     private GoogleMap.OnMyLocationChangeListener myLocationChangeListener = new GoogleMap.OnMyLocationChangeListener() {
@@ -240,10 +239,14 @@ public class RegisterStallActivity extends FragmentActivity implements OnMapRead
         public void onMyLocationChange(Location location) {
             LatLng loc = new LatLng(location.getLatitude(), location.getLongitude());
             if (mMap != null) {
-                //mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(loc, 10.0f));
+//                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(loc, 5.0f));
 
                 mMap.addMarker(new MarkerOptions().position(loc).title("Marker"));
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, 15));
+
+                if (BuildConfig.DEBUG) {
+                    Toast.makeText(RegisterStallActivity.this, "location->" + location.getLatitude() + "," + location.getLongitude(), Toast.LENGTH_SHORT).show();
+                }
             }
         }
     };
@@ -369,7 +372,7 @@ public class RegisterStallActivity extends FragmentActivity implements OnMapRead
         }
     }
 
-    public interface OnClickFoodmenu {
+    public interface OnClickFoodMenu {
         void onClickFoodMenu(String name, int position, boolean add_remove);
     }
 }
