@@ -29,7 +29,6 @@ import com.edmodo.rangebar.RangeBar;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -58,7 +57,7 @@ import in.seleption.model.Stall;
 /**
  * Created by Lokesh on 28-11-2015.
  */
-public class RegisterStallActivity extends FragmentActivity{
+public class RegisterStallActivityWithMap extends FragmentActivity implements OnMapReadyCallback {
 
     /*Set Tag Value for Class Identification*/
     private String TAG = "RegisterStallActivity";
@@ -86,6 +85,8 @@ public class RegisterStallActivity extends FragmentActivity{
 
     /*photo path location to store*/
     private String mCurrentPhotoPath;
+
+    private GoogleMap mMap;
 
     /*Request Id for camera*/
     private static final int REQUEST_IMAGE_CAPTURE = 1;
@@ -120,6 +121,11 @@ public class RegisterStallActivity extends FragmentActivity{
         stall = new Stall();
         stall.setStart_time(defaultStartTime);
         stall.setEnd_time(defaultEndTime);
+
+//        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+//        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+//                .findFragmentById(R.id.map);
+//        mapFragment.getMapAsync(this);
 
         /*set Default Value*/
         String time = String.format(getString(R.string.label_tv_timing), defaultStartTime, defaultEndTime);
@@ -156,9 +162,9 @@ public class RegisterStallActivity extends FragmentActivity{
         /*make resource free*/
         typedArray.recycle();
 
-        /*Assign all related category to grid-view*/
-        ImageAdapter imageAdapter = new ImageAdapter(this, items, onClickFoodMenu);
-        gvCategoryMenu.setAdapter(imageAdapter);
+//        /*Assign all related category to grid-view*/
+//        ImageAdapter imageAdapter = new ImageAdapter(this, items, onClickFoodMenu);
+//        gvCategoryMenu.setAdapter(imageAdapter);
     }
 
 
@@ -184,7 +190,67 @@ public class RegisterStallActivity extends FragmentActivity{
             }
             stall.setMenu(menu);
             if (BuildConfig.DEBUG) {
-                Toast.makeText(RegisterStallActivity.this, JsonHelper.ConvertToJson(menu), Toast.LENGTH_SHORT).show();
+                Toast.makeText(RegisterStallActivityWithMap.this, JsonHelper.ConvertToJson(menu), Toast.LENGTH_SHORT).show();
+            }
+        }
+    };
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if (requestCode == MY_LOCATION_REQUEST_CODE) {
+            if (permissions.length == 1 &&
+                    permissions[0] == Manifest.permission.ACCESS_FINE_LOCATION &&
+                    grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                mMap.setMyLocationEnabled(true);
+                mMap.setOnMyLocationChangeListener(myLocationChangeListener);
+
+            } else {
+
+                // Permission was denied. Display an error message.
+                Toast.makeText(RegisterStallActivityWithMap.this, "Without Location permission we can not register you", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+
+        if (Build.VERSION.SDK_INT > 22) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                    == PackageManager.PERMISSION_GRANTED) {
+                mMap.setMyLocationEnabled(true);
+                mMap.setOnMyLocationChangeListener(myLocationChangeListener);
+
+            } else {
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                        MY_LOCATION_REQUEST_CODE);
+            }
+        } else {
+            mMap.setMyLocationEnabled(true);
+            mMap.setOnMyLocationChangeListener(myLocationChangeListener);
+        }
+
+    }
+
+    private GoogleMap.OnMyLocationChangeListener myLocationChangeListener = new GoogleMap.OnMyLocationChangeListener() {
+        @Override
+        public void onMyLocationChange(Location location) {
+            LatLng loc = new LatLng(location.getLatitude(), location.getLongitude());
+            if (mMap != null) {
+//                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(loc, 5.0f));
+
+                mMap.clear();
+                mMap.addMarker(new MarkerOptions().position(loc).title(etName.getText().toString()));
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, 15));
+                stall.setLatittude(loc.latitude);
+                stall.setLongitude(loc.longitude);
+
+                if (BuildConfig.DEBUG) {
+                    Toast.makeText(RegisterStallActivityWithMap.this, "location->" + location.getLatitude() + "," + location.getLongitude(), Toast.LENGTH_SHORT).show();
+                }
             }
         }
     };
@@ -281,12 +347,12 @@ public class RegisterStallActivity extends FragmentActivity{
     public void onSubmit(View v) {
         String name = etName.getText().toString();
         if (name == null || name.length() < 2) {
-            Toast.makeText(RegisterStallActivity.this, "Enter Shop name correctly", Toast.LENGTH_SHORT).show();
+            Toast.makeText(RegisterStallActivityWithMap.this, "Enter Shop name correctly", Toast.LENGTH_SHORT).show();
             return;
         }
         String number = etNumber.getText().toString();
         if (!Pattern.matches("\\d{10}", number)) {
-            Toast.makeText(RegisterStallActivity.this, "Enter mobile number correctly", Toast.LENGTH_SHORT).show();
+            Toast.makeText(RegisterStallActivityWithMap.this, "Enter mobile number correctly", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -298,6 +364,9 @@ public class RegisterStallActivity extends FragmentActivity{
         stall.setUrl(mCurrentPhotoPath);
 
         DBUtility.insertSingleStall(getApplicationContext(), stall);
+        if (BuildConfig.DEBUG) {
+            Toast.makeText(RegisterStallActivityWithMap.this, mMap.getMyLocation().getLatitude() + "-" + mMap.getMyLocation().getLongitude(), Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void LogD(String msg) {

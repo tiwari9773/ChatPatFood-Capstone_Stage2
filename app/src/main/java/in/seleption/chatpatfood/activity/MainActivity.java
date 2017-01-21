@@ -32,7 +32,7 @@ import in.seleption.model.Menu;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, HomeMenuClickListener, LoaderManager.LoaderCallbacks<Cursor> {
 
-    private static final String TAG = MainActivity.class.getName();
+    private static final String TAG = "MainActivity";
     private HomeMenuRecyclerAdapter adapter;
 
     // Unique Loader Id for every loader we create
