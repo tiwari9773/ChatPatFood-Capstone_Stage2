@@ -16,6 +16,8 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -58,7 +60,7 @@ import in.seleption.model.Stall;
 /**
  * Created by Lokesh on 28-11-2015.
  */
-public class RegisterStallActivity extends FragmentActivity{
+public class RegisterStallActivity extends AppCompatActivity {
 
     /*Set Tag Value for Class Identification*/
     private String TAG = "RegisterStallActivity";
@@ -90,8 +92,6 @@ public class RegisterStallActivity extends FragmentActivity{
     /*Request Id for camera*/
     private static final int REQUEST_IMAGE_CAPTURE = 1;
 
-    private int MY_LOCATION_REQUEST_CODE = 1;
-
     /*-------------------------------*/
     private int defaultStartTime = 10;
     private int defaultEndTime = 18;
@@ -103,7 +103,7 @@ public class RegisterStallActivity extends FragmentActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_stalls);
 
-        /*Initialise Butterknife lib for Injection*/
+        /*Initialise Butter-knife lib for Injection*/
         ButterKnife.bind(this);
 
         /*Initialise Activity*/
@@ -116,6 +116,9 @@ public class RegisterStallActivity extends FragmentActivity{
 
     /*Initialise all respective variable*/
     private void initialise() {
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.tb_main);
+        setSupportActionBar(toolbar);
 
         stall = new Stall();
         stall.setStart_time(defaultStartTime);
