@@ -15,10 +15,11 @@ public class AppConstant {
 
     // for Tracking call of method
     public static boolean DEVELOPER_TRACK = true;
-
-
     public static String TYPE_TEXT_DATA_TRANS = "text/plain";
 
     /*New Preference for request status*/
     public static String PREF_FILE_LOCATION_STATUS = BuildConfig.APPLICATION_ID;
+
+    public static String FIREBASE_NODE_STALLS = "stall-detail";
+
 }
