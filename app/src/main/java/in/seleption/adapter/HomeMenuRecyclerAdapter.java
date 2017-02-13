@@ -7,9 +7,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
+import in.seleption.Utility.JsonHelper;
+import in.seleption.Utility.Utility;
 import in.seleption.chatpatfood.R;
 import in.seleption.db_helper.TableContract;
 import in.seleption.listener.HomeMenuClickListener;
+import in.seleption.model.Menu;
 
 /**
  * Created by Lokesh on 09-11-2015.
@@ -36,7 +41,27 @@ public class HomeMenuRecyclerAdapter extends RecyclerView.Adapter<HomeMenuRecycl
 
         cursor.moveToPosition(position);
         String stallName = cursor.getString(cursor.getColumnIndex(TableContract.RegisterStall.NAME));
-        holder.textView.setText(stallName);
+        holder.tvHead.setText(stallName);
+        String sTime = cursor.getString(cursor.getColumnIndex(TableContract.RegisterStall.START_TIME));
+        String eTime = cursor.getString(cursor.getColumnIndex(TableContract.RegisterStall.END_TIME));
+
+        String s = cursor.getString(cursor.getColumnIndex(TableContract.RegisterStall.MENU));
+        if (Utility.isValidText(s)) {
+
+            ArrayList<Menu> menus = JsonHelper.ConvertToMenuObject(s);
+
+            if (Utility.isValidList(menus)) {
+                String text = "";
+                for (Menu menu : menus) {
+                    text = menu.getName() + " ,";
+                }
+
+                text = text.substring(0, text.length() - 2);
+                holder.tvItem.setText(text);
+            }
+
+        }
+        holder.tvTime.setText(sTime + " - " + eTime);
     }
 
     @Override
@@ -47,18 +72,22 @@ public class HomeMenuRecyclerAdapter extends RecyclerView.Adapter<HomeMenuRecycl
             return cursor.getCount();
     }
 
-    public class HomeMenuHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    class HomeMenuHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private HomeMenuClickListener onHomeMenuClickListener;
         private View parentView;
 
-        public TextView textView;
+        public TextView tvHead;
+        public TextView tvItem;
+        public TextView tvTime;
 
         public HomeMenuHolder(View itemView, HomeMenuClickListener homeMenuClickListener) {
             super(itemView);
             this.onHomeMenuClickListener = homeMenuClickListener;
             parentView = itemView;
-            textView = (TextView) parentView.findViewById(R.id.tv_menu_name);
+            tvHead = (TextView) parentView.findViewById(R.id.tv_menu_name);
+            tvItem = (TextView) parentView.findViewById(R.id.tv_stall_name);
+            tvTime = (TextView) parentView.findViewById(R.id.tv_timing);
             parentView.setOnClickListener(this);
         }
 

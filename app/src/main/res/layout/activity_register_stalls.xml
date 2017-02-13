@@ -200,26 +200,35 @@
 
             </android.support.v7.widget.CardView>
 
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/default_padding"
-                android:padding="@dimen/default_padding"
-                android:text="Shop Photo"
-                android:textAppearance="?android:textAppearanceLarge" />
+                android:orientation="vertical"
+                android:visibility="gone">
 
-            <android.support.v7.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <ImageView
-                    android:id="@+id/ib_stall_image"
+                <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/btn_height_camera"
-                    android:clickable="true"
-                    android:scaleType="center"
-                    android:src="@drawable/ic_menu_camera"></ImageView>
-            </android.support.v7.widget.CardView>
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/default_padding"
+                    android:padding="@dimen/default_padding"
+                    android:text="Shop Photo"
+                    android:textAppearance="?android:textAppearanceLarge" />
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/ib_stall_image"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/btn_height_camera"
+                        android:clickable="true"
+                        android:scaleType="center"
+                        android:src="@drawable/ic_menu_camera"></ImageView>
+                </android.support.v7.widget.CardView>
+
+
+            </LinearLayout>
 
 
             <!--<TextView-->

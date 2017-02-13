@@ -4,6 +4,13 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
 
+    <color name="colorthirdOrange">#EC971F</color>
+    <color name="colorSecondary">#1565C0</color>
+    <color name="colorPrimaryLight">#C5CAE9</color>
+    <color name="colorProfileSelectorCircle">@color/colorPrimary</color>
+    <color name="colorPrimaryText">#212121</color>
+    <color name="colorSecondaryText">#727272</color>
+
     <color name="ic_menu_color">#FF000000</color>
     <color name="half_transparant_color">#80000000</color>
 
@@ -18,4 +25,30 @@
     <item name="darkgreen" type="color">#FF669900</item>
     <item name="darkorange" type="color">#FFFF8800</item>
     <item name="darkred" type="color">#FFCC0000</item>
+
+
+    <color name="divider">#d6d5d5</color>
+    <color name="light_background">#f6f6f6</color>
+    <color name="transparent_light_background">#40f6f6f6</color>
+
+    <color name="white">#ffffff</color>
+    <color name="transparent">#00000000</color>
+    <color name="transparent_50">#E1F5FE</color>
+    <color name="transparent_25">#40000000</color>
+    <color name="transparent_50_">#CC000000</color>
+    <color name="transparent_20">#33000000</color>
+
+    <!--Custom Color for Register Page-->
+    <item name="msg_snac_color" type="color">#FFFF4444</item>
+
+
+    <!-- ListView Colors -->
+    <item name="list_heading" type="color">#303F9F</item>
+    <item name="list_second" type="color">#606060</item>
+    <item name="list_third" type="color">#999999</item>
+
+    <item name="color_list_count" type="color">#e3e3e3</item>
+    <color name="unselected_circle">#4D000000</color>
+
+
 </resources>

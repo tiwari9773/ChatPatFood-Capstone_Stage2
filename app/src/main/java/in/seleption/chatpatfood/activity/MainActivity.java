@@ -17,6 +17,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -80,7 +82,7 @@ public class MainActivity extends AppCompatActivity
 
         RecycleMarginDecoration decorator = new RecycleMarginDecoration(this);
         adapter = new HomeMenuRecyclerAdapter(this);
-        GridLayoutManager manager = new GridLayoutManager(this, 2, LinearLayoutManager.VERTICAL, false);
+        GridLayoutManager manager = new GridLayoutManager(this, 1, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(manager);
         recyclerView.addItemDecoration(decorator);
         recyclerView.setAdapter(adapter);
@@ -166,8 +168,20 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
 
+        toggleVisibility(data);
+
         if (data != null) {
             adapter.swapCursor(data);
+        }
+    }
+
+    private void toggleVisibility(Cursor data) {
+        if (data != null && data.getCount() > 0) {
+            TextView textView = (TextView) findViewById(R.id.tv_msg);
+            textView.setVisibility(View.GONE);
+        } else {
+            TextView textView = (TextView) findViewById(R.id.tv_msg);
+            textView.setVisibility(View.VISIBLE);
         }
     }
 

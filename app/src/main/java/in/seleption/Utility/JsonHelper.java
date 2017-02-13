@@ -3,7 +3,12 @@ package in.seleption.Utility;
 import com.google.android.gms.common.api.Status;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+
+import in.seleption.model.Menu;
 import in.seleption.model.Stall;
 
 
@@ -17,8 +22,11 @@ public class JsonHelper {
         return gson.toJson(object);
     }
 
-    public static Stall ConvertToEmployeeObject(String json) {
-        return new Gson().fromJson(json, Stall.class);
+    public static ArrayList<Menu> ConvertToMenuObject(String json) {
+
+        Type listType = new TypeToken<ArrayList<Menu>>() {
+        }.getType();
+        return new Gson().fromJson(json, listType);
     }
 
 //    public static List<Job> ConvertToJobListObject(String json) {
