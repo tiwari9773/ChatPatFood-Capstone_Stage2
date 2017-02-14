@@ -34,6 +34,8 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -301,6 +303,10 @@ public class RegisterStallActivity extends AppCompatActivity {
         stall.setUrl(mCurrentPhotoPath);
 
         DBUtility.insertSingleStall(getApplicationContext(), stall);
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+        mDatabase.child(stall.getMobile_no()).setValue(stall);
+//        mDatabase.push().setValue(stall);
+
     }
 
     private void LogD(String msg) {

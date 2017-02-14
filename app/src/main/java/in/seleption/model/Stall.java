@@ -1,10 +1,13 @@
 package in.seleption.model;
 
+import com.google.firebase.database.IgnoreExtraProperties;
+
 import java.util.List;
 
 /**
  * Created by Lokesh on 16-02-2016.
  */
+@IgnoreExtraProperties
 public class Stall {
 
     String stall_name;
